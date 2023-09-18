@@ -28,6 +28,13 @@ components:
       required: True
       schema:
         type: "string"
+    note_id:
+      name: "note_id"
+      description: "ID of the note"
+      in: path
+      required: true
+      schema:
+        type: integer
 
 paths:
   /people:
@@ -92,3 +99,14 @@ paths:
       responses:
         "204":
           description: "Successfully deleted person"
+  /notes/{note_id}:
+    get:   
+      operationId: "notes.read_one"
+      tags:
+        - Notes
+      summary: "Read one note"
+      parameters:
+        - $ref: "#/components/parameters/note_id"
+      responses:
+        "200":
+          description: "Successfully read one note"
