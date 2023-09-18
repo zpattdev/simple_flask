@@ -18,7 +18,7 @@ class Person(db.Model):
     fname = db.Column(db.String(32))
     timestamp = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
-    note = db.relationship(
+    notes = db.relationship(
         Note,
         backref="person",
         cascade="all, delete, delete-orphan",
@@ -31,6 +31,7 @@ class PersonSchema(ma.SQLAlchemyAutoSchema):
         model = Person
         load_instance = True
         sqla_session = db.session
+        include_relationships = True
 
 person_schema = PersonSchema()
 people_schema = PersonSchema(many=True)
