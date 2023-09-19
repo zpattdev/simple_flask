@@ -11,43 +11,38 @@ def read_all():
     return people_schema.dump(people)
 
 def create(person):
-    lname = person.get("lname")
-    existing = Person.query.filter(Person.lname == lname).one_or_none()
+    new_person = person_schema.load(person, session=db.session)
+    db.session.add(new_person)
+    db.session.commit()
+    return person_schema.dump(new_person), 201
 
-    if not existing:
-        new_person = person_schema.load(person, session=db.session)
-        db.session.add(new_person)
-        db.session.commit()
-        return person_schema.dump(new_person), 201
-    else:
-        abort(406, f"Person with last name {lname} already exists")
-
-def read_one(lname):
-    person = Person.query.filter(Person.lname == lname).one_or_none()
+def read_one(person_id):
+    person = Person.query.get(person_id)
 
     if Person:
         return person_schema.dump(person)
     else:
-        abort(404, f"Person with last name {lname} not found")
+        abort(404, f"Person with ID {person_id} not found")
 
-def update(lname, person):
-    existing = Person.query.filter(Person.lname == lname).one_or_none()
+def update(person_id, person):
+    existing = Person.query.get(person_id)
 
     if existing:
         update_person = person_schema.load(person, session=db.session)
         existing.fname = update_person.fname
+        existing.lname = update_person.lname
         db.session.merge(existing)
         db.session.commit()
         return person_schema.dump(existing), 201
     else:
-        abort(404, f"Person with last name {lname} not found")
+        abort(404, f"Person with ID {person_id} not found")
 
-def delete(lname):
-    existing = Person.query.filter(Person.lname == lname).one_or_none()
+def delete(person_id):
+    existing = Person.query.get(person_id)
 
     if existing:
         db.session.delete(existing)
         db.session.commit()
-        return make_response(f"{lname} successfully deleted"), 200
+        return make_response(f"{person_id} successfully deleted"), 200
     else:
-        abort(404, f"Person with last name {lname} not found")
+        abort(404, f"Person with ID {person_id} not found")
