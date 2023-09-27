@@ -1,6 +1,7 @@
 <!-- templates/_person_content.html -->
 
 <div class="person-card" data-person-id="{{ person.id }}">
+    {% include "_person_control.html" %}
     <div class="person-content">
         <h2>
             <span data-person-fname="{{ person.fname }}">{{ person.fname }}</span>
