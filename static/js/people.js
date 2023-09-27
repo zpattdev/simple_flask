@@ -1,6 +1,7 @@
 // static/js/people.js
 
 import { sendForm } from "./request.js";
+import { NoteCreateForm } from "./notes.js";
 
 
 export class People {
@@ -46,6 +47,8 @@ class CreatePersonForm {
     personLastName.setAttribute("data-person-lname", data.lname);
 
     personCard.setAttribute("data-person-id", data.id);
+    personCard.querySelector(".note-card").forEach((noteCard) => noteCard.remove());
+    new NoteCreateForm(personCard.querySelector(".note-list"), data.id);
     document.querySelector(".people-list").appendChild(personCard);
   }
 }
