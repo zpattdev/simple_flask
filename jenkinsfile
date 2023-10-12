@@ -9,9 +9,9 @@ pipeline {
 
   stages {
 
-    stage('Checkout Source') {
+    stage('Clone Source') {
       steps {
-        git 'https://github.com/zpattdev/simple_flask.git'
+        git branch: 'jenkins', url: 'https://github.com/zpattdev/simple_flask.git'
       }
     }
 
